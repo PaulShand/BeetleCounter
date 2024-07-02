@@ -2,6 +2,16 @@
 
 This project provides a Flask-based API for counting beetles in images using computer vision techniques.
 
+## Purpose
+
+This code was designed to assist in a specific college research project. It is optimized for a particular environment and use case:
+
+- Intended for counting beetles in images where the subjects are spread out
+- Designed to work best with images featuring a predominantly white background
+- May not be as effective or accurate when used in different contexts or environments
+
+Due to these specialized requirements, the app's beetle counting functionality is most reliable when used under conditions similar to those in the research setting it was developed for.
+
 ## Features
 
 - Upload images via a RESTful API

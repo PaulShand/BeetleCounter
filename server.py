@@ -34,21 +34,27 @@ def upload_file():
     filename = secure_filename(file.filename)
     file_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(file_path)
+    # tries to process image if anything goes bad tell it to grab the ERROR image
+    try:
+        # Process the image
+        beetle_count, processed_image = count_beetles(file_path)
 
-    # Process the image
-    beetle_count, processed_image = count_beetles(file_path)
+        # Save the processed image
+        processed_filename = f"processed_{filename}"
+        processed_file_path = os.path.join(PROCESSED_FOLDER, processed_filename)
+        cv2.imwrite(processed_file_path, processed_image)
+    except Exception:
+        processed_filename = f"ERROR.png"
+        processed_file_path = os.path.join(PROCESSED_FOLDER, processed_filename)
+        beetle_count = 0
 
-    # Save the processed image
-    processed_filename = f"processed_{filename}"
-    processed_file_path = os.path.join(PROCESSED_FOLDER, processed_filename)
-    cv2.imwrite(processed_file_path, processed_image)
-
-    # Gives off the place where the prcessed file will be found
+    # Return success response
     return jsonify({
         "message": "File uploaded and processed successfully",
         "processed_file_url": f"/processed/{processed_filename}",
         "beetle_count": beetle_count
     }), 200
+
 
 # Receives the image at specific location
 @app.route('/processed/<filename>', methods=['GET'])
